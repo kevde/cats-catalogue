@@ -1,10 +1,9 @@
 import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Masonry from "react-masonry-css";
-import { connect } from "react-redux";
 import CatCard from "../components/CatCard";
 import CatFilterForm from "../components/CatFilterForm";
-import * as CatAction from "../redux/actions/CatAction";
+import { CatContext } from "../context/CatContext";
 
 const breakpointColumnsObj = {
   default: 4,
@@ -15,18 +14,20 @@ const breakpointColumnsObj = {
 
 class CatList extends React.Component {
 
+  static contextType = CatContext;
+
   async componentDidMount() {
     const { breedId } = this.props.match.params;
-    await this.props.selectCurrentBreed(breedId);
+    await this.context.selectCurrentBreed(breedId);
   }
 
   handleLoadMore = async () => {
     const { breedId } = this.props.match.params;
-    await this.props.loadMoreBreeds(breedId, this.props.nextPage);
+    await this.context.loadMoreBreeds(breedId, this.context.nextPage);
   }
 
   render() {
-    const { cats } = this.props;
+    const { cats } = this.context;
     return (
       <Container className="mx-4">
         <Row>
@@ -54,18 +55,4 @@ class CatList extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  cats: state?.cats?.list || [],
-  nextPage: state?.cats?.nextPage || 0,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  selectCurrentBreed: async (breedId) => {
-    return dispatch(CatAction.selectCurrentBreed(breedId));
-  },
-  loadMoreBreeds: async (breedId) => {
-    return dispatch(CatAction.loadMoreBreeds(breedId));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CatList);
+export default CatList;
