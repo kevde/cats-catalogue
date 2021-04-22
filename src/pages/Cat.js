@@ -4,6 +4,9 @@ import _ from "lodash";
 import { CardGroup, Card, Row, Col, Spinner, Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { CatContext } from "../context/CatContext";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import 'react-lazy-load-image-component/src/effects/blur.css';
+
 class Cat extends React.Component {
   state = {
     loading: false,
@@ -36,59 +39,57 @@ class Cat extends React.Component {
     const description = _.get(currentCat, 'breeds.0.description');
     return (
       <Row className="justify-content-md-center align-items-center">
-        <Col md="8">
+        <Col md="10">
           <CardGroup>
             <Card>
-              {currentCat && (
-                <Card.Img
-                  style={{ width: "100%" }}
-                  variant="top" src={currentCat.url} />
-              )}
               <Card.Body>
-                {currentBreed && (
-                  <Card.Title>
-                    <Row>
-                      <Col>
-                        <b>
-                          Breed Name
+                <Row>
+                  <Col md="8">
+                    {currentCat && (
+                      <LazyLoadImage
+                        effect="blur"
+                        width="100%"
+                        variant="top" src={currentCat.url} />
+                    )}
+                  </Col>
+                  <Col md="4">
+                    {currentBreed && (
+                      <Card.Title>
+                        <Row>
+                          <Col>{currentBreed}</Col>
+                        </Row>
+                      </Card.Title>
+                    )}
+                    <Container>
+                      {origin && (
+                        <Row>
+                          <Col md="12">
+                            <b>
+                              Origin
                     </b>
-                      </Col>
-                      <Col>{currentBreed}</Col>
-                    </Row>
-                  </Card.Title>
-                )}
-                <Container>
-                  {origin && (
-                    <Row>
-                      <Col md="6">
-                        <b>
-                          Origin
-                    </b>
-                      </Col>
-                      <Col md="6">{origin}</Col>
-                    </Row>
-                  )}
-                  {temperament && (
-                    <Row>
-                      <Col md="6">
-                        <b>
-                          Temperament
-                  </b>
-                      </Col>
-                      <Col>{temperament}</Col>
-                    </Row>
-                  )}
-                  {description && (
-                    <Row>
-                      <Col>
-                        <b>
-                          Description
-                    </b>
-                      </Col>
-                      <Col>{description}</Col>
-                    </Row>
-                  )}
-                </Container>
+                          </Col>
+                          <Col>{origin}</Col>
+                        </Row>
+                      )}
+                      {temperament && (
+                        <Row className="my-4">
+                          <Col md="12">
+                            <b>Temperament</b>
+                          </Col>
+                          <Col>{temperament}</Col>
+                        </Row>
+                      )}
+                      {description && (
+                        <Row>
+                          <Col md="12">
+                            <b>Description</b>
+                          </Col>
+                          <Col>{description}</Col>
+                        </Row>
+                      )}
+                    </Container>
+                  </Col>
+                </Row>
               </Card.Body>
               <Card.Footer>
                 <Link to={currentBreedId ? `/breeds/${currentBreedId}` : ""}>
@@ -105,11 +106,13 @@ class Cat extends React.Component {
   render() {
     if (this.state.loading) {
       return (
-        <Row>
-          <Col>
-            <Spinner />
-          </Col>
-        </Row>
+        <Container className="">
+          <Row className="height-100 justify-content-md-center align-items-center">
+            <Col>
+              <Spinner animation="border" />
+            </Col>
+          </Row>
+        </Container>
       );
     }
 
