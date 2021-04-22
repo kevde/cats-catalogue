@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
+import { LazyLoadComponent } from "react-lazy-load-image-component";
 import Masonry from "react-masonry-css";
 import CatCard from "../components/CatCard";
 import CatFilterForm from "../components/CatFilterForm";
@@ -13,7 +14,6 @@ const breakpointColumnsObj = {
 }
 
 class CatList extends React.Component {
-
   static contextType = CatContext;
 
   async componentDidMount() {
@@ -35,21 +35,36 @@ class CatList extends React.Component {
             <CatFilterForm />
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <Masonry
-              breakpointCols={breakpointColumnsObj}
-              className="my-masonry-grid"
-              columnClassName="my-masonry-grid_column">
-              {cats && cats.map((cat, key) => (<CatCard cat={cat} key={key} />))}
-            </Masonry>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Button variant="flat" size="xxl" onClick={this.handleLoadMore}>Load More</Button>
-          </Col>
-        </Row>
+        {this.context.loading && (
+          <Container className="">
+            <Row className="height-100 justify-content-md-center align-items-center">
+              <Col>
+                <Spinner animation="border" />
+              </Col>
+            </Row>
+          </Container>
+        )}
+        {!this.context.loading && (
+          <LazyLoadComponent>
+            <Row>
+              <Col>
+                <Masonry
+                  breakpointCols={breakpointColumnsObj}
+                  className="my-masonry-grid"
+                  columnClassName="my-masonry-grid_column">
+                  {cats && cats.map((cat, key) => (<CatCard cat={cat} key={key} />))}
+                </Masonry>
+              </Col>
+            </Row>
+          </LazyLoadComponent>
+        )}
+        {!this.context.loading && (
+          <Row>
+            <Col>
+              <Button variant="flat" size="xxl" onClick={this.handleLoadMore}>Load More</Button>
+            </Col>
+          </Row>
+        )}
       </Container>
     )
   }

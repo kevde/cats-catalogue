@@ -35,66 +35,70 @@ class Cat extends React.Component {
     const origin = _.get(currentCat, 'breeds.0.origin');
     const description = _.get(currentCat, 'breeds.0.description');
     return (
-      <CardGroup>
-        <Card>
-          {currentCat && (
-            <Card.Img
-              style={{ width: "100%" }}
-              variant="top" src={currentCat.url} />
-          )}
-          <Card.Body>
-            {currentBreed && (
-              <Card.Title>
-                <Row>
-                  <Col>
-                    <b>
-                      Breed Name
-                    </b>
-                  </Col>
-                  <Col>{currentBreed}</Col>
-                </Row>
-              </Card.Title>
-            )}
-            <Container>
-              {origin && (
-                <Row>
-                  <Col md="6">
-                    <b>
-                      Origin
-                    </b>
-                  </Col>
-                  <Col md="6">{origin}</Col>
-                </Row>
+      <Row className="justify-content-md-center align-items-center">
+        <Col md="8">
+          <CardGroup>
+            <Card>
+              {currentCat && (
+                <Card.Img
+                  style={{ width: "100%" }}
+                  variant="top" src={currentCat.url} />
               )}
-              {temperament && (
-              <Row>
-                <Col md="6">
-                  <b>
-                    Temperament
+              <Card.Body>
+                {currentBreed && (
+                  <Card.Title>
+                    <Row>
+                      <Col>
+                        <b>
+                          Breed Name
+                    </b>
+                      </Col>
+                      <Col>{currentBreed}</Col>
+                    </Row>
+                  </Card.Title>
+                )}
+                <Container>
+                  {origin && (
+                    <Row>
+                      <Col md="6">
+                        <b>
+                          Origin
+                    </b>
+                      </Col>
+                      <Col md="6">{origin}</Col>
+                    </Row>
+                  )}
+                  {temperament && (
+                    <Row>
+                      <Col md="6">
+                        <b>
+                          Temperament
                   </b>
-                </Col>
-                <Col>{temperament}</Col>
-              </Row>                
-              )}
-              {description && (
-                <Row>
-                  <Col>
-                    <b>
-                      Description
+                      </Col>
+                      <Col>{temperament}</Col>
+                    </Row>
+                  )}
+                  {description && (
+                    <Row>
+                      <Col>
+                        <b>
+                          Description
                     </b>
-                  </Col>
-                  <Col>{description}</Col>
-                </Row>
-              )}
-            </Container>
-          </Card.Body>
-          <Card.Footer>
-            <Link to={currentBreedId ? `/breeds/${currentBreedId}` : ""}>
-              <Button variant="flat" size="xxl">Back</Button>
-            </Link>
-          </Card.Footer>
-        </Card>
-      </CardGroup>
+                      </Col>
+                      <Col>{description}</Col>
+                    </Row>
+                  )}
+                </Container>
+              </Card.Body>
+              <Card.Footer>
+                <Link to={currentBreedId ? `/breeds/${currentBreedId}` : ""}>
+                  <Button variant="flat" size="xxl">Back</Button>
+                </Link>
+              </Card.Footer>
+            </Card>
+          </CardGroup>
+        </Col>
+      </Row>
     )
   }
 
